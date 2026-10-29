@@ -1,0 +1,10 @@
+README.md
+pyproject.toml
+src/csv2json_cli/cli.py
+src/csv2json_cli_qosim.egg-info/PKG-INFO
+src/csv2json_cli_qosim.egg-info/SOURCES.txt
+src/csv2json_cli_qosim.egg-info/dependency_links.txt
+src/csv2json_cli_qosim.egg-info/entry_points.txt
+src/csv2json_cli_qosim.egg-info/requires.txt
+src/csv2json_cli_qosim.egg-info/top_level.txt
+test/test_cli.py

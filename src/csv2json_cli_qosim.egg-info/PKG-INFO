@@ -1,0 +1,121 @@
+Metadata-Version: 2.4
+Name: csv2json-cli-qosim
+Version: 1.0.0
+Summary: A small command-line tool to convert CSV files to JSON
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Provides-Extra: test
+Requires-Dist: pytest>=8.0; extra == "test"
+
+# csv2json-cli
+
+A lightweight Python command-line tool that converts CSV files into JSON arrays.
+
+## Requirements
+
+- Python 3.10 or later
+- pip
+
+The application uses Python's standard library and has no third-party runtime dependencies.
+
+## Installation
+
+Clone the repository and enter its directory. Then install the tool and its test dependencies:
+
+```bash
+python -m pip install -e ".[test]"
+```
+
+## Usage
+
+Convert a CSV file and print JSON to the terminal:
+
+```bash
+csv2json people.csv
+```
+
+Save the JSON to a file:
+
+```bash
+csv2json people.csv --output people.json
+```
+
+The short output option also works:
+
+```bash
+csv2json people.csv -o people.json
+```
+
+Display the help message:
+
+```bash
+csv2json --help
+```
+
+## Example
+
+Input file, `people.csv`:
+
+```csv
+name,age,city
+Amina,22,Lagos
+Tunde,25,Ilorin
+```
+
+Command:
+
+```bash
+csv2json people.csv -o people.json
+```
+
+Output file, `people.json`:
+
+```json
+[
+  {
+    "name": "Amina",
+    "age": "22",
+    "city": "Lagos"
+  },
+  {
+    "name": "Tunde",
+    "age": "25",
+    "city": "Ilorin"
+  }
+]
+```
+
+CSV values remain strings. The tool does not guess whether a value represents a number, a date, or a boolean.
+
+## Error handling
+
+The tool reports errors for missing files, empty input, malformed CSV, empty or duplicate column names, and rows with the wrong number of columns. Completely blank rows are ignored. Input and output paths must be different.
+
+## Running tests
+
+Install the optional test dependency with the installation command above, then run:
+
+```bash
+python -m pytest
+```
+
+The automated tests cover successful conversion, quoted commas, empty input, duplicate headers, inconsistent row lengths, missing files, malformed CSV, and help output.
+
+## Design decision after testing awkward input
+
+During testing, I considered using a dictionary-based CSV reader directly. However, duplicate headers can cause values to be overwritten when rows are converted into dictionaries, and inconsistent row lengths can be handled in ways that silently lose or invent information.
+
+I changed the implementation to validate the header names and check every nonblank row's column count before creating a dictionary. The tool now rejects ambiguous or inconsistent records with an error rather than producing misleading JSON. This makes failure explicit and protects the data's integrity.
+
+## Project structure
+
+```text
+src/csv2json_cli/cli.py
+tests/test_cli.py
+pyproject.toml
+README.md
+```
+
+## Licence
+
+MIT
